@@ -10,6 +10,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type']
 }))
 
+app.use(express.json());
 
 // sending the numbers in query-params
 app.get("/findsum",function(req, res) {
@@ -45,13 +46,36 @@ app.get("/findsum",function(req, res) {
 
   secondNumber = result.data;
 
-  res.status(200).text(`${firstNumber + secondNumber}`);
+  res.status(200).send(`${firstNumber + secondNumber}`);
 
+})
+
+app.post("/calculator", function(req, res, next) {
+  let { first_number, second_number, operation } = req.body;
+  console.log(req.body);
+  first_number = parseInt(first_number);
+  second_number = parseInt(second_number);
+
+  let result = 0;
+  if(operation === "+") {
+    result = first_number + second_number;
+  } else if(operation === "-") {
+    result = first_number - second_number;
+  } else if(operation === "*") {
+    result = first_number * second_number
+  } else {
+    result = first_number / second_number
+  }
+
+  res.status(200).json({
+    result
+  })
 })
 
 
 
 app.use(function(err, req, res, next) {
+  console.log(err);
   if(err) {
     res.status(500).json({
       msg: "Internal server error",
