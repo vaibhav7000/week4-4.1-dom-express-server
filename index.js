@@ -1,7 +1,14 @@
 const express = require("express");
+const cors = require("cors");
 const z = require("zod");
 const app = express();
 const port = 3000;
+
+app.use(cors({
+  origin: '*',
+  methods:['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}))
 
 
 // sending the numbers in query-params
@@ -38,7 +45,7 @@ app.get("/findsum",function(req, res) {
 
   secondNumber = result.data;
 
-  res.status(200).send(`${firstNumber + secondNumber}`);
+  res.status(200).text(`${firstNumber + secondNumber}`);
 
 })
 
